@@ -1,34 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import { Input } from 'antd';
 
-import styles from './Search.module.scss';
-
 import { API } from '../../constants';
 
-const SearchInput = () => {
+import { store } from '../../store/store';
+import { ActionTypes } from '../../store/types';
+
+const SearchInput = (): React.ReactElement => {
   const [city, setCity] = useState('');
+  const { dispatch } = useContext(store);
+
   useEffect(() => {
     const fetchCities = async () => {
       const response = await fetch(`${API}/cities/?search=${city}`);
       const data = await response.json();
+      const result = data._embedded['city:search-results'];
 
-      console.log(data);
+      if (city) {
+        dispatch({ type: ActionTypes.SET_CITIES_DATA, payload: result });
+      } else {
+        dispatch({ type: ActionTypes.SET_CITIES_DATA, payload: [] });
+      }
+      dispatch({ type: ActionTypes.LOADING, payload: false });
     };
     fetchCities();
-  }, [city]);
+  }, [city, dispatch]);
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>): void => {
     const value = e.currentTarget.value;
+
+    dispatch({ type: ActionTypes.LOADING, payload: true });
 
     setCity(value);
   };
 
   return (
     <>
-      <div className={styles.searchHolder}>
-        <Input placeholder='Start searching a city...' onInput={handleInput} />
-      </div>
+      <Input placeholder='Start searching a city...' onInput={handleInput} />
     </>
   );
 };

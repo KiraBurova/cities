@@ -3,7 +3,8 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { Layout } from 'antd';
 
-import SearchScreen from './screens/Search.screen';
+import SearchScreen from './screens/Search/Search.screen';
+import CityScreen from './screens/City/City.screen';
 
 import styles from './App.module.scss';
 
@@ -17,6 +18,7 @@ const App = () => {
         <Redirect from='/' to='list' />
         <Switch>
           <Route path='/list' component={SearchScreen} />
+          <Route path='/search/:cityId' component={CityScreen} />
         </Switch>
       </Content>
       <Footer />
