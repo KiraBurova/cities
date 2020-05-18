@@ -7,17 +7,13 @@ import { store } from '../../store/store';
 
 import { SearchedCity } from '../../types.ds';
 
+import { getIdFromLink } from '../../helpers';
+
 const Cities = (): React.ReactElement => {
   const globalState = useContext(store);
   const {
     state: { cities, loading },
   } = globalState;
-
-  const getIdFromLink = (link: string): RegExpMatchArray | null => {
-    const regex = /\d+/;
-
-    return link.match(regex);
-  };
 
   return (
     <List

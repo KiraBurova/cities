@@ -1,7 +1,9 @@
 import React from 'react';
 
+import City from '../../components/City';
+
 const CityScreen = (): React.ReactElement => {
-  return <div>city</div>;
+  return <City />;
 };
 
 export default CityScreen;

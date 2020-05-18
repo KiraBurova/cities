@@ -7,3 +7,4 @@ export enum ActionTypes {
   SET_CITIES_DATA = 'SET_CITIES_DATA',
   LOADING = 'LOADING',
 }
+
