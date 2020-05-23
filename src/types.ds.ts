@@ -17,7 +17,11 @@ export type CityType = {
   };
   name: string;
   population: number;
-  _links: [];
+  _links: {
+    'city:urban_area': {
+      href: string;
+    };
+  };
 };
 
 export type ParamsType = {
