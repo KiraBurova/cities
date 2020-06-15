@@ -1,14 +1,9 @@
-import { ActionTypes } from './types';
+import { ActionTypes, Action } from './types';
 
-export type SetCitiesAction = {
-  type: ActionTypes.SET_CITIES_DATA;
-  payload: [];
-};
-
-export const citiesReducer = (state: [], action: SetCitiesAction) => {
+export const citiesReducer = (state: [], action: Action): [] => {
   switch (action.type) {
     case ActionTypes.SET_CITIES_DATA:
-      return (state = action.payload);
+      return action.cities;
     default:
       return state;
   }

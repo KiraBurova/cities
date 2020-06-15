@@ -1,12 +1,12 @@
-import React, { createContext, useReducer, Dispatch } from 'react';
+import React, { createContext, useReducer, Dispatch, Reducer } from 'react';
 
-import { InitialStateType } from './types';
+import { InitialStateType, Action, ProviderProps } from './types';
 
-import { SetCitiesAction, citiesReducer } from './citiesReducer';
-import { LoadingActions, loadingReducer } from './loadingReducer';
-import { SetScoresAction, statsReducer } from './statsReducer';
+import { citiesReducer } from './citiesReducer';
+import { loadingReducer } from './loadingReducer';
+import { statsReducer } from './statsReducer';
 
-const initialState: InitialStateType = {
+export const initialState: InitialStateType = {
   cities: [],
   loading: false,
   stats: {
@@ -18,28 +18,25 @@ const initialState: InitialStateType = {
 
 const store = createContext<{
   state: InitialStateType;
-  dispatch: Dispatch<SetCitiesAction | SetScoresAction | LoadingActions>;
+  dispatch: Dispatch<Action>;
 }>({
   state: initialState,
   dispatch: () => {},
 });
 const { Provider } = store;
 
-const mainReducer = (
-  { cities, loading, stats }: InitialStateType,
-  action: LoadingActions | SetCitiesAction | SetScoresAction,
-) => ({
-  //@ts-ignore
+const mainReducer = ({ loading, cities, stats }: InitialStateType, action: Action) => ({
   cities: citiesReducer(cities, action),
-  //@ts-ignore
   loading: loadingReducer(loading, action),
-  //@ts-ignore
   stats: statsReducer(stats, action),
 });
 
-const StateProvider = ({ children }: any): React.ReactElement => {
-  const [state, dispatch] = useReducer<any>(mainReducer, initialState);
-  //@ts-ignore
+const StateProvider = ({ children }: ProviderProps): React.ReactElement => {
+  const [state, dispatch] = useReducer<Reducer<InitialStateType, Action>>(
+    mainReducer,
+    initialState,
+  );
+
   return <Provider value={{ state, dispatch }}>{children}</Provider>;
 };
 

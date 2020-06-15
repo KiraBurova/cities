@@ -22,7 +22,9 @@ const Scores = (): React.ReactElement => {
       <div className={styles.summaryHolder}>
         <Typography>
           <Paragraph>
-            <div dangerouslySetInnerHTML={{ __html: stats.scores.summary }}></div>
+            {stats.scores.summary && (
+              <div dangerouslySetInnerHTML={{ __html: stats.scores.summary }}></div>
+            )}
           </Paragraph>
         </Typography>
       </div>

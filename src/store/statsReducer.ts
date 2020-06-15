@@ -1,18 +1,18 @@
-import { ActionTypes } from './types';
+import { ActionTypes, Action } from './types';
 
-export type SetScoresAction = {
-  type: ActionTypes.SET_SCORES_DATA;
-  payload: {};
+type ScoresStateType = {
+  scores: {
+    summary?: string;
+  };
 };
 
-type State = {
-  scores: {};
-};
-
-export const statsReducer = (state: State, action: SetScoresAction) => {
+export const statsReducer = (state: ScoresStateType, action: Action): ScoresStateType => {
   switch (action.type) {
     case ActionTypes.SET_SCORES_DATA:
-      return { ...state, scores: action.payload };
+      return {
+        ...state,
+        scores: action.scores,
+      };
     default:
       return state;
   }

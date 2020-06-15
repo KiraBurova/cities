@@ -18,11 +18,11 @@ const SearchInput = (): React.ReactElement => {
       const result = data._embedded['city:search-results'];
 
       if (city) {
-        dispatch({ type: ActionTypes.SET_CITIES_DATA, payload: result });
+        dispatch({ type: ActionTypes.SET_CITIES_DATA, cities: result });
       } else {
-        dispatch({ type: ActionTypes.SET_CITIES_DATA, payload: [] });
+        dispatch({ type: ActionTypes.SET_CITIES_DATA, cities: [] });
       }
-      dispatch({ type: ActionTypes.LOADING, payload: false });
+      dispatch({ type: ActionTypes.LOADING, loading: false });
     };
     fetchCities();
   }, [city, dispatch]);
@@ -30,7 +30,7 @@ const SearchInput = (): React.ReactElement => {
   const handleInput = (e: React.FormEvent<HTMLInputElement>): void => {
     const value = e.currentTarget.value;
 
-    dispatch({ type: ActionTypes.LOADING, payload: true });
+    dispatch({ type: ActionTypes.LOADING, loading: true });
 
     setCity(value);
   };

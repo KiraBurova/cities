@@ -27,7 +27,7 @@ const City = (): React.ReactElement => {
       const scoresResult = await fetch(urbanArea._links['ua:scores'].href);
       const scores = await scoresResult.json();
 
-      dispatch({ type: ActionTypes.SET_SCORES_DATA, payload: scores });
+      dispatch({ type: ActionTypes.SET_SCORES_DATA, scores: scores });
 
       setCity(city);
     };

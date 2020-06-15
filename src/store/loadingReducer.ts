@@ -1,14 +1,9 @@
-import { ActionTypes } from './types';
+import { ActionTypes, Action } from './types';
 
-export type LoadingActions = {
-  type: ActionTypes.LOADING;
-  payload: boolean;
-};
-
-export const loadingReducer = (state: boolean, action: LoadingActions) => {
+export const loadingReducer = (state: boolean, action: Action): boolean => {
   switch (action.type) {
     case ActionTypes.LOADING:
-      return (state = action.payload);
+      return action.loading;
     default:
       return state;
   }
