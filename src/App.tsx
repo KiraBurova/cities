@@ -15,8 +15,8 @@ const App = () => {
     <div className={styles.app}>
       <Header />
       <Content style={{ flex: '1' }}>
-        <Redirect from='/' to='list' />
         <Switch>
+          <Redirect exact from='/' to='list' />
           <Route path='/list' component={SearchScreen} />
           <Route path='/search/:cityId' component={CityScreen} />
         </Switch>
