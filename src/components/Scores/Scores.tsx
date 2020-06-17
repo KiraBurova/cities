@@ -1,22 +1,54 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
 
 import { Typography, Divider } from 'antd';
-import { API } from '../../constants';
-import { ParamsType, CityType } from '../../types.ds';
-import { formatNumber } from '../../helpers';
+
+import { Bar } from 'react-chartjs-2';
+
 import { store } from '../../store/store';
-import { ActionTypes } from '../../store/types';
+import { ChartData } from '../../types.ds';
 
 import styles from './Scores.module.scss';
 
-const { Title, Paragraph, Text } = Typography;
+const { Paragraph } = Typography;
 
 const Scores = (): React.ReactElement => {
   const globalState = useContext(store);
+  const [chartData, setChartData] = useState({});
   const {
     state: { stats },
   } = globalState;
+  useEffect(() => {
+    const categories = stats.scores.categories;
+    const transformedChartData: ChartData = {
+      labels: [],
+      datasets: [
+        {
+          data: [],
+          backgroundColor: [],
+          borderColor: '',
+          borderWidth: 0,
+        },
+      ],
+    };
+    const chartData = categories.reduce((prev, curr): ChartData => {
+      return {
+        labels: prev.labels.concat(curr.name),
+        datasets: [
+          {
+            data: prev.datasets
+              .map((item): Array<number> => item.data.concat(curr.score_out_of_10))
+              .flat(),
+            backgroundColor: prev.datasets
+              .map((item): Array<string> => item.backgroundColor.concat(curr.color))
+              .flat(),
+            borderColor: 'black',
+            borderWidth: 1,
+          },
+        ],
+      };
+    }, transformedChartData);
+    setChartData(chartData);
+  }, [stats.scores.categories]);
   return (
     <>
       <div className={styles.summaryHolder}>
@@ -27,6 +59,20 @@ const Scores = (): React.ReactElement => {
             )}
           </Paragraph>
         </Typography>
+        <Bar
+          data={chartData}
+          options={{
+            title: {
+              display: true,
+              text: 'Scores of the city',
+              fontSize: 24,
+              fontColor: 'black',
+            },
+            legend: {
+              display: false,
+            },
+          }}
+        />
       </div>
       <Divider />
     </>

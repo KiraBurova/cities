@@ -12,6 +12,13 @@ export const initialState: InitialStateType = {
   stats: {
     scores: {
       summary: '',
+      categories: [
+        {
+          name: '',
+          color: '',
+          score_out_of_10: 0,
+        },
+      ],
     },
   },
 };

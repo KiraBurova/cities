@@ -4,6 +4,11 @@ export type InitialStateType = {
   stats: {
     scores: {
       summary?: string;
+      categories: Array<{
+        color: string;
+        name: string;
+        score_out_of_10: number;
+      }>;
     };
   };
 };
@@ -16,7 +21,14 @@ export enum ActionTypes {
 
 export type SetScoresAction = {
   type: ActionTypes.SET_SCORES_DATA;
-  scores: {};
+  scores: {
+    summary: string;
+    categories: Array<{
+      color: string;
+      name: string;
+      score_out_of_10: number;
+    }>;
+  };
 };
 
 export type LoadingActions = {
