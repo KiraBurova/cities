@@ -20,6 +20,7 @@ export const initialState: InitialStateType = {
         },
       ],
     },
+    images: { _links: {}, photos: [] },
   },
 };
 

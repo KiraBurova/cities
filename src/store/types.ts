@@ -1,3 +1,5 @@
+import { ImagesType } from '../types.ds';
+
 export type InitialStateType = {
   cities: [];
   loading: boolean;
@@ -10,6 +12,7 @@ export type InitialStateType = {
         score_out_of_10: number;
       }>;
     };
+    images: ImagesType;
   };
 };
 
@@ -29,6 +32,7 @@ export type SetScoresAction = {
       score_out_of_10: number;
     }>;
   };
+  images: ImagesType;
 };
 
 export type LoadingActions = {

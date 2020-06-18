@@ -24,6 +24,22 @@ export type CityType = {
   };
 };
 
+export type ImagesType = {
+  _links: {};
+  photos: Array<{
+    attribution: {
+      license: string;
+      photographer: string;
+      site: string;
+      source: string;
+    };
+    image: {
+      mobile: string;
+      web: string;
+    };
+  }>;
+};
+
 export type ParamsType = {
   cityId: string;
 };

@@ -1,4 +1,5 @@
 import { ActionTypes, Action } from './types';
+import { ImagesType } from '../types.ds';
 
 type ScoresStateType = {
   scores: {
@@ -9,6 +10,7 @@ type ScoresStateType = {
       score_out_of_10: number;
     }>;
   };
+  images: ImagesType;
 };
 
 export const statsReducer = (state: ScoresStateType, action: Action): ScoresStateType => {
@@ -21,6 +23,7 @@ export const statsReducer = (state: ScoresStateType, action: Action): ScoresStat
           summary: action.scores.summary,
           categories: action.scores.categories,
         },
+        images: action.images,
       };
     default:
       return state;
