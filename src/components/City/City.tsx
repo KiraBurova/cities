@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { PageHeader, Descriptions } from 'antd';
+import { PageHeader, Descriptions, Spin } from 'antd';
 
 import { API } from '../../constants';
 import { ParamsType, CityType } from './types';
@@ -10,16 +10,23 @@ import { formatNumber } from '../../helpers';
 import { store } from '../../store/store';
 import { ActionTypes } from '../../store/types';
 
+import CityDetails from '../CityDetails';
+
 import styles from './City.module.scss';
 
 const City = (): React.ReactElement => {
   const params = useParams<ParamsType>();
   const [city, setCity] = useState<CityType | null>(null);
   const [images, setImages] = useState<ImagesType | null>(null);
-  const { dispatch } = useContext(store);
+  const {
+    dispatch,
+    state: { loading },
+  } = useContext(store);
 
   useEffect(() => {
     const fetchCity = async () => {
+      dispatch({ type: ActionTypes.LOADING, loading: true });
+
       const cityResult = await fetch(`${API}/cities/geonameid:${params.cityId}`);
       const city: CityType = await cityResult.json();
 
@@ -36,8 +43,9 @@ const City = (): React.ReactElement => {
 
       setCity(city);
       setImages(images);
-    };
 
+      dispatch({ type: ActionTypes.LOADING, loading: false });
+    };
     fetchCity();
   }, [dispatch, params.cityId]);
 
@@ -66,15 +74,18 @@ const City = (): React.ReactElement => {
 
   return (
     <>
-      {city && images && (
-        <PageHeader
-          className='site-page-header-responsive'
-          onBack={() => window.history.back()}
-          title={city.full_name}
-        >
-          {renderContent(city, images)}
-        </PageHeader>
-      )}
+      <Spin spinning={loading} size='large'>
+        {city && images && (
+          <PageHeader
+            className='site-page-header-responsive'
+            onBack={() => window.history.back()}
+            title={city.full_name}
+          >
+            {renderContent(city, images)}
+          </PageHeader>
+        )}
+        <CityDetails />
+      </Spin>
     </>
   );
 };

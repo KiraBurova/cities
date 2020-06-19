@@ -13,7 +13,7 @@ const { Header, Footer, Content } = Layout;
 const App = () => {
   return (
     <div className={styles.app}>
-      <Header />
+      <Header className={styles.header}>Teleport Cities API</Header>
       <Content style={{ flex: '1' }}>
         <Switch>
           <Redirect exact from='/' to='list' />

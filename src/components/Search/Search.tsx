@@ -7,17 +7,20 @@ import { API } from '../../constants';
 import { store } from '../../store/store';
 import { ActionTypes } from '../../store/types';
 
+import { useDebounce } from '../../hooks';
+
 const SearchInput = (): React.ReactElement => {
   const [city, setCity] = useState('');
+  const debouncedCity = useDebounce(city, 500);
   const { dispatch } = useContext(store);
 
   useEffect(() => {
     const fetchCities = async () => {
-      const response = await fetch(`${API}/cities/?search=${city}`);
+      const response = await fetch(`${API}/cities/?search=${debouncedCity}`);
       const data = await response.json();
       const result = data._embedded['city:search-results'];
 
-      if (city) {
+      if (debouncedCity) {
         dispatch({ type: ActionTypes.SET_CITIES_DATA, cities: result });
       } else {
         dispatch({ type: ActionTypes.SET_CITIES_DATA, cities: [] });
@@ -25,7 +28,7 @@ const SearchInput = (): React.ReactElement => {
       dispatch({ type: ActionTypes.LOADING, loading: false });
     };
     fetchCities();
-  }, [city, dispatch]);
+  }, [debouncedCity, dispatch]);
 
   const handleInput = (e: React.FormEvent<HTMLInputElement>): void => {
     const value = e.currentTarget.value;

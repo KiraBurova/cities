@@ -7,11 +7,11 @@ import { Bar } from 'react-chartjs-2';
 import { store } from '../../store/store';
 import { ChartData } from './types';
 
-import styles from './Scores.module.scss';
+import styles from './CityDetails.module.scss';
 
 const { Paragraph } = Typography;
 
-const Scores = (): React.ReactElement => {
+const CityDetails = (): React.ReactElement => {
   const globalState = useContext(store);
   const [chartData, setChartData] = useState({});
   const {
@@ -79,4 +79,4 @@ const Scores = (): React.ReactElement => {
   );
 };
 
-export default Scores;
+export default CityDetails;
