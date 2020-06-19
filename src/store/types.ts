@@ -1,4 +1,4 @@
-import { ImagesType } from '../types.ds';
+import { ImagesType } from '../types';
 
 export type InitialStateType = {
   cities: [];

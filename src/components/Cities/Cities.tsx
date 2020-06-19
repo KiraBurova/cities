@@ -5,7 +5,7 @@ import { List } from 'antd';
 
 import { store } from '../../store/store';
 
-import { SearchedCity } from '../../types.ds';
+import { SearchedCity } from './types';
 
 import { getIdFromLink } from '../../helpers';
 

@@ -1,5 +1,5 @@
 import { ActionTypes, Action } from './types';
-import { ImagesType } from '../types.ds';
+import { ImagesType } from '../types';
 
 type ScoresStateType = {
   scores: {

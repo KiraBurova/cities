@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import { PageHeader, Descriptions } from 'antd';
 
 import { API } from '../../constants';
-import { ParamsType, CityType, ImagesType } from '../../types.ds';
+import { ParamsType, CityType } from './types';
+import { ImagesType, PhotosType } from '../../types';
 import { formatNumber } from '../../helpers';
 import { store } from '../../store/store';
 import { ActionTypes } from '../../store/types';
@@ -21,8 +22,6 @@ const City = (): React.ReactElement => {
     const fetchCity = async () => {
       const cityResult = await fetch(`${API}/cities/geonameid:${params.cityId}`);
       const city: CityType = await cityResult.json();
-
-      //ua:scores
 
       const urbanResult = await fetch(city._links['city:urban_area'].href);
       const urbanArea = await urbanResult.json();
@@ -51,19 +50,17 @@ const City = (): React.ReactElement => {
         <Descriptions.Item label='Longitude'>{city.location.latlon.longitude}</Descriptions.Item>
         <Descriptions.Item label='Latitude'>{city.location.latlon.latitude}</Descriptions.Item>
       </Descriptions>
-      <div className={styles.imagesHolder}>
-        {images.photos &&
-          images.photos.map(
-            (photo: any): React.ReactElement => (
-              <img
-                className={styles.image}
-                src={photo.image.web}
-                key={photo.image.web}
-                alt='The city view'
-              />
-            ),
-          )}
-      </div>
+      {images.photos &&
+        images.photos.map(
+          (photo: PhotosType): React.ReactElement => (
+            <img
+              className={styles.image}
+              src={photo.image.web}
+              key={photo.image.web}
+              alt='The city view'
+            />
+          ),
+        )}
     </>
   );
 

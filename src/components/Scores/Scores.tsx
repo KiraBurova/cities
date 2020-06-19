@@ -5,7 +5,7 @@ import { Typography, Divider } from 'antd';
 import { Bar } from 'react-chartjs-2';
 
 import { store } from '../../store/store';
-import { ChartData } from '../../types.ds';
+import { ChartData } from './types';
 
 import styles from './Scores.module.scss';
 
