@@ -15,3 +15,17 @@ export type PhotosType = {
     web: string;
   };
 };
+
+export type ScoresType = {
+  stats: {
+    scores: {
+      summary?: string;
+      categories: Array<{
+        color: string;
+        name: string;
+        score_out_of_10: number;
+      }>;
+    };
+    images: ImagesType;
+  };
+};

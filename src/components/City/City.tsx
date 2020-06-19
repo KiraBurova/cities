@@ -5,7 +5,7 @@ import { PageHeader, Descriptions, Spin } from 'antd';
 
 import { API } from '../../constants';
 import { ParamsType, CityType } from './types';
-import { ImagesType, PhotosType } from '../../types';
+import { ImagesType, PhotosType, ScoresType } from '../../types';
 import { formatNumber } from '../../helpers';
 import { store } from '../../store/store';
 import { ActionTypes } from '../../store/types';
@@ -18,6 +18,7 @@ const City = (): React.ReactElement => {
   const params = useParams<ParamsType>();
   const [city, setCity] = useState<CityType | null>(null);
   const [images, setImages] = useState<ImagesType | null>(null);
+  const [scores, setScores] = useState<ScoresType | null>(null);
   const {
     dispatch,
     state: { loading },
@@ -30,26 +31,28 @@ const City = (): React.ReactElement => {
       const cityResult = await fetch(`${API}/cities/geonameid:${params.cityId}`);
       const city: CityType = await cityResult.json();
 
-      const urbanResult = await fetch(city._links['city:urban_area'].href);
-      const urbanArea = await urbanResult.json();
+      if (city._links['city:urban_area']) {
+        const urbanResult = await fetch(city._links['city:urban_area'].href);
+        const urbanArea = await urbanResult.json();
 
-      const scoresResult = await fetch(urbanArea._links['ua:scores'].href);
-      const scores = await scoresResult.json();
+        const scoresResult = await fetch(urbanArea._links['ua:scores'].href);
+        const scores = await scoresResult.json();
 
-      const imagesResult = await fetch(urbanArea._links['ua:images'].href);
-      const images: ImagesType = await imagesResult.json();
+        const imagesResult = await fetch(urbanArea._links['ua:images'].href);
+        const images: ImagesType = await imagesResult.json();
 
-      dispatch({ type: ActionTypes.SET_SCORES_DATA, scores: scores, images: images });
-
+        dispatch({ type: ActionTypes.SET_SCORES_DATA, scores: scores, images: images });
+        setImages(images);
+        setScores(scores);
+      }
       setCity(city);
-      setImages(images);
 
       dispatch({ type: ActionTypes.LOADING, loading: false });
     };
     fetchCity();
-  }, [dispatch, params.cityId]);
+  }, [dispatch, images, params.cityId]);
 
-  const renderContent = (city: CityType, images: ImagesType) => (
+  const renderContent = (city: CityType, images: ImagesType | null) => (
     <>
       <Descriptions column={1}>
         <Descriptions.Item label='Population'>
@@ -58,7 +61,8 @@ const City = (): React.ReactElement => {
         <Descriptions.Item label='Longitude'>{city.location.latlon.longitude}</Descriptions.Item>
         <Descriptions.Item label='Latitude'>{city.location.latlon.latitude}</Descriptions.Item>
       </Descriptions>
-      {images.photos &&
+      {images &&
+        images.photos &&
         images.photos.map(
           (photo: PhotosType): React.ReactElement => (
             <img
@@ -75,16 +79,16 @@ const City = (): React.ReactElement => {
   return (
     <>
       <Spin spinning={loading} size='large'>
-        {city && images && (
+        {(city || images) && (
           <PageHeader
             className='site-page-header-responsive'
             onBack={() => window.history.back()}
-            title={city.full_name}
+            title={city && city.full_name}
           >
-            {renderContent(city, images)}
+            {city && renderContent(city, images)}
           </PageHeader>
         )}
-        <CityDetails />
+        {scores && <CityDetails />}
       </Spin>
     </>
   );
